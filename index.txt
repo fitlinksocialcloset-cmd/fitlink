@@ -1,0 +1,918 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="FitLink">
+<meta name="theme-color" content="#7B675D">
+<title>FitLink</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+:root{
+  --ww:#F8F5F1;--cr:#EFE7DD;--nu:#DCCFC0;--tp:#A38F85;
+  --br:#7B675D;--ink:#2B2B2B;--ink2:#5A4F49;--ink3:#9A8C85;
+  --sage:#9AA894;--blush:#C4A09A;--err:#9A4040;--ok:#4A7A5A;
+  --r:14px;--rs:9px;
+  --sh:0 2px 16px rgba(90,60,40,.07);
+  --shc:0 1px 6px rgba(90,60,40,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'DM Sans',sans-serif;-webkit-tap-highlight-color:transparent;}
+body{background:var(--cr);color:var(--ink);min-height:100vh;font-size:14px;}
+.app{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:var(--cr);}
+.hidden{display:none!important;}
+img{display:block;}
+button{font-family:inherit;cursor:pointer;}
+
+/* ── TOPBAR ─────────────────────────────── */
+.topbar{background:var(--ww);border-bottom:1px solid rgba(163,143,133,.15);padding:13px 18px 11px;position:sticky;top:0;z-index:50;box-shadow:var(--sh);}
+.topbar-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;}
+.wordmark{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:27px;color:var(--br);letter-spacing:.03em;}
+.nav-strip{display:flex;gap:2px;background:var(--cr);border-radius:12px;padding:3px;}
+.nb{flex:1;border:none;background:transparent;padding:7px 3px;font-size:10px;color:var(--ink3);border-radius:10px;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:2px;line-height:1;letter-spacing:.02em;}
+.nb i{font-size:16px;}
+.nb.active{background:var(--ww);color:var(--br);box-shadow:var(--shc);}
+.chip{display:flex;align-items:center;gap:7px;padding:4px 11px 4px 4px;background:var(--cr);border-radius:20px;border:1px solid rgba(163,143,133,.22);box-shadow:var(--shc);transition:all .2s;}
+.chip:hover{background:var(--nu);}
+.av{width:27px;height:27px;border-radius:50%;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:#fff;}
+.av img{width:100%;height:100%;object-fit:cover;}
+.chip-name{font-size:12px;font-weight:500;color:var(--br);}
+
+/* ── CONTENT ────────────────────────────── */
+.content{flex:1;padding:18px;}
+.pt{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:var(--br);margin-bottom:16px;letter-spacing:.02em;}
+.section-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--tp);margin-bottom:10px;}
+
+/* ── AUTH ───────────────────────────────── */
+.auth-bg{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:44px 30px;background:var(--ww);}
+.auth-logo{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:48px;color:var(--br);margin-bottom:4px;}
+.auth-tag{font-size:11px;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:34px;}
+.atabs{display:flex;background:var(--cr);border-radius:12px;padding:3px;margin-bottom:22px;border:1px solid rgba(163,143,133,.15);}
+.atab{flex:1;border:none;background:transparent;padding:10px;font-size:13px;color:var(--ink3);border-radius:10px;transition:all .2s;}
+.atab.active{background:var(--ww);color:var(--br);font-weight:500;box-shadow:var(--shc);}
+
+/* ── FORMS ──────────────────────────────── */
+.fg{margin-bottom:14px;}
+.fl{display:block;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3);margin-bottom:6px;}
+.fi{width:100%;background:var(--ww);border:1px solid rgba(163,143,133,.28);border-radius:var(--rs);padding:11px 14px;font-size:14px;color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s;}
+.fi:focus{border-color:var(--tp);box-shadow:0 0 0 3px rgba(163,143,133,.1);}
+.fsel{width:100%;background:var(--ww);border:1px solid rgba(163,143,133,.28);border-radius:var(--rs);padding:11px 14px;font-size:14px;color:var(--ink);outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23A38F85' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;}
+textarea.fi{resize:vertical;min-height:72px;}
+.pw-wrap{position:relative;}
+.pw-wrap .fi{padding-right:44px;}
+.pw-eye{position:absolute;right:0;top:0;bottom:0;width:44px;display:flex;align-items:center;justify-content:center;background:none;border:none;color:var(--ink3);font-size:17px;transition:color .15s;}
+.pw-eye:hover{color:var(--br);}
+.check-row{display:flex;align-items:center;gap:10px;margin-top:4px;}
+.check-row input[type=checkbox]{width:16px;height:16px;accent-color:var(--br);cursor:pointer;}
+.check-row label{font-size:13px;color:var(--ink2);cursor:pointer;}
+
+/* ── BUTTONS ────────────────────────────── */
+.bp{width:100%;background:var(--br);color:#fff;border:none;border-radius:var(--r);padding:13px;font-size:14px;font-weight:500;transition:all .2s;letter-spacing:.03em;box-shadow:0 2px 8px rgba(123,103,93,.25);}
+.bp:hover{background:var(--ink2);}
+.bmt{margin-top:6px;}
+.bs{width:100%;background:transparent;color:var(--ink2);border:1px solid rgba(163,143,133,.35);border-radius:var(--r);padding:12px;font-size:13px;margin-top:8px;transition:all .2s;}
+.bs:hover{background:var(--nu);}
+.bd{width:100%;background:transparent;color:var(--err);border:1px solid rgba(194,130,130,.4);border-radius:var(--r);padding:12px;font-size:13px;margin-top:8px;transition:all .2s;}
+.bd:hover{background:#F9EFEF;}
+.bsm{border:1px solid rgba(163,143,133,.28);background:var(--ww);color:var(--ink2);border-radius:20px;padding:5px 13px;font-size:11px;transition:all .2s;white-space:nowrap;box-shadow:var(--shc);}
+.bsm:hover{background:var(--nu);}
+.bsm.on{background:var(--br);border-color:var(--br);color:#fff;}
+.tlink{background:none;border:none;color:var(--tp);font-size:12px;text-decoration:underline;padding:0;}
+.tlink:hover{color:var(--br);}
+.icon-btn{background:none;border:none;color:var(--tp);font-size:18px;padding:5px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.icon-btn:hover{background:var(--nu);color:var(--br);}
+
+/* ── ALERTS ─────────────────────────────── */
+.aerr{font-size:12px;color:var(--err);margin-top:8px;padding:11px 14px;background:#F9EFEF;border-radius:var(--rs);}
+.aok{font-size:12px;color:var(--ok);margin-top:8px;padding:11px 14px;background:#EFF5EF;border-radius:var(--rs);}
+
+/* ── CATEGORY FOLDERS ───────────────────── */
+.cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px;}
+.cat-folder{background:var(--ww);border:1px solid rgba(163,143,133,.15);border-radius:var(--r);padding:0;overflow:hidden;box-shadow:var(--shc);transition:transform .18s,box-shadow .18s;cursor:pointer;position:relative;}
+.cat-folder:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(90,60,40,.11);}
+.cat-folder-preview{height:110px;display:grid;gap:1px;background:var(--nu);overflow:hidden;}
+.cat-folder-preview.n1{grid-template-columns:1fr;}
+.cat-folder-preview.n2{grid-template-columns:1fr 1fr;}
+.cat-folder-preview.n3{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;}
+.cat-folder-preview.n3 .pv-cell:first-child{grid-row:1/3;}
+.cat-folder-preview.n4{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;}
+.pv-cell{overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.pv-cell img{width:100%;height:100%;object-fit:cover;}
+.pv-cell .pv-empty{font-size:22px;color:var(--tp);}
+.cat-folder-info{padding:11px 13px 12px;display:flex;align-items:center;justify-content:space-between;}
+.cat-folder-name{font-size:13px;font-weight:500;color:var(--ink);}
+.cat-folder-count{font-size:11px;color:var(--tp);}
+.add-item-tile{background:transparent;border:1.5px dashed rgba(163,143,133,.4);border-radius:var(--r);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:20px;cursor:pointer;transition:all .2s;min-height:160px;}
+.add-item-tile:hover{border-color:var(--tp);background:var(--ww);}
+.add-item-tile i{font-size:28px;color:var(--tp);}
+.add-item-tile span{font-size:12px;color:var(--tp);}
+
+/* ── CATEGORY VIEW (back to overview) ───── */
+.cat-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.back-btn{display:flex;align-items:center;gap:5px;background:none;border:none;color:var(--tp);font-size:13px;padding:0;transition:color .15s;}
+.back-btn:hover{color:var(--br);}
+
+/* ── CLOSET GRID ────────────────────────── */
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;}
+.ic{background:var(--ww);border-radius:var(--r);overflow:hidden;transition:transform .18s,box-shadow .18s;position:relative;box-shadow:var(--shc);border:1px solid rgba(163,143,133,.12);}
+.ic:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(90,60,40,.11);}
+.ic.sel{border:1.5px solid var(--sage);}
+.ic.sel::after{content:'✓';position:absolute;top:8px;right:8px;width:22px;height:22px;background:var(--sage);color:#fff;border-radius:50%;font-size:12px;display:flex;align-items:center;justify-content:center;z-index:3;}
+.ic-img{width:100%;aspect-ratio:1/1;overflow:hidden;background:var(--nu);display:flex;align-items:center;justify-content:center;position:relative;}
+.ic-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.ic-img .no-img{font-size:11px;color:var(--tp);text-align:center;padding:8px;}
+.priv-b{position:absolute;top:8px;left:8px;background:rgba(43,43,43,.5);color:#fff;border-radius:6px;padding:2px 7px;font-size:10px;z-index:1;backdrop-filter:blur(4px);}
+
+/* Heart on card — always visible, clean */
+.fav-b{position:absolute;top:8px;right:8px;background:rgba(248,245,241,.9);border:none;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;z-index:2;font-size:15px;transition:all .2s;box-shadow:0 1px 4px rgba(90,60,40,.1);}
+.fav-b:hover{background:#fff;transform:scale(1.08);}
+.fav-b.on{color:#C47A7A;background:#fff;}
+
+.ic-info{padding:9px 11px 6px;}
+.ic-brand{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ic-meta{font-size:11px;color:var(--ink3);display:flex;align-items:center;gap:5px;}
+.cdot{width:8px;height:8px;border-radius:50%;border:1px solid rgba(163,143,133,.3);flex-shrink:0;}
+.shop-link{display:inline-flex;align-items:center;gap:2px;font-size:10px;color:var(--tp);text-decoration:none;background:rgba(163,143,133,.1);border-radius:20px;padding:2px 8px;white-space:nowrap;transition:all .15s;margin-left:auto;}
+.shop-link:hover{background:rgba(163,143,133,.2);}
+
+/* Item card action row — edit + delete */
+.ic-actions{display:flex;align-items:center;justify-content:flex-end;gap:2px;padding:4px 8px 8px;}
+
+/* ── FILTER PANEL ───────────────────────── */
+.filter-btn-row{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.filter-toggle-btn{display:flex;align-items:center;gap:6px;border:1px solid rgba(163,143,133,.28);background:var(--ww);color:var(--ink2);border-radius:20px;padding:6px 14px;font-size:12px;box-shadow:var(--shc);transition:all .2s;}
+.filter-toggle-btn:hover{background:var(--nu);}
+.filter-toggle-btn.active{background:var(--br);border-color:var(--br);color:#fff;}
+.filter-count{background:var(--sage);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;font-weight:500;}
+.filter-panel{background:var(--ww);border:1px solid rgba(163,143,133,.18);border-radius:var(--r);padding:16px;margin-bottom:14px;box-shadow:var(--sh);animation:fi .15s;}
+.filter-section{margin-bottom:14px;}
+.filter-section:last-child{margin-bottom:0;}
+.filter-section-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--tp);margin-bottom:8px;}
+.fchips{display:flex;gap:6px;flex-wrap:wrap;}
+.fchip{border:1px solid rgba(163,143,133,.25);background:var(--cr);color:var(--ink2);border-radius:20px;padding:4px 11px;font-size:11px;transition:all .15s;}
+.fchip:hover{background:var(--nu);}
+.fchip.on{background:var(--br);border-color:var(--br);color:#fff;}
+.filter-actions{display:flex;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid rgba(163,143,133,.15);}
+.filter-actions button{flex:1;padding:9px;border-radius:var(--rs);font-size:12px;}
+
+/* ── SEARCH ─────────────────────────────── */
+.search-wrap{position:relative;margin-bottom:14px;}
+.search-wrap .fi{padding-left:38px;padding-right:12px;}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--ink3);font-size:16px;pointer-events:none;}
+
+/* ── UPLOAD ─────────────────────────────── */
+.uz{border:1.5px dashed rgba(163,143,133,.4);border-radius:var(--r);background:var(--ww);overflow:hidden;position:relative;width:100%;aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .2s;}
+.uz:hover{border-color:var(--tp);}
+.uz.filled{border-style:solid;border-color:rgba(163,143,133,.25);}
+.uz img.prev{width:100%;height:100%;object-fit:cover;display:block;}
+.uz-ph{display:flex;flex-direction:column;align-items:center;gap:9px;padding:20px;text-align:center;}
+.uz-ph i{font-size:30px;color:var(--tp);}
+.uz-title{font-size:13px;font-weight:500;color:var(--br);}
+.uz-sub{font-size:11px;color:var(--ink3);line-height:1.5;}
+.uz-acts{display:flex;background:rgba(43,43,43,.52);backdrop-filter:blur(6px);position:absolute;bottom:0;left:0;right:0;}
+.uz-act{flex:1;border:none;background:transparent;color:#fff;padding:10px 6px;font-size:12px;display:flex;align-items:center;justify-content:center;gap:4px;transition:background .15s;}
+.uz-act:hover{background:rgba(255,255,255,.14);}
+.uz-act+.uz-act{border-left:1px solid rgba(255,255,255,.18);}
+.load-bar{height:3px;background:var(--nu);border-radius:2px;margin-top:8px;overflow:hidden;}
+.load-bar-in{height:100%;background:var(--br);border-radius:2px;width:0;transition:width .3s;}
+#fg,#fc,#fa{display:none;}
+
+/* ── AVATAR UPLOAD ──────────────────────── */
+.av-up{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:20px;}
+.av-ring{width:82px;height:82px;border-radius:50%;overflow:hidden;border:1.5px dashed rgba(163,143,133,.4);display:flex;align-items:center;justify-content:center;position:relative;transition:border-color .2s;background:var(--nu);}
+.av-ring:hover{border-color:var(--br);}
+.av-ring img{width:100%;height:100%;object-fit:cover;}
+.av-ov{position:absolute;inset:0;background:rgba(43,43,43,.35);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;}
+.av-ring:hover .av-ov{opacity:1;}
+.av-ov i{color:#fff;font-size:20px;}
+.av-hint{font-size:11px;color:var(--ink3);}
+
+/* ── TOGGLE ─────────────────────────────── */
+.trow{display:flex;align-items:center;justify-content:space-between;background:var(--ww);border:1px solid rgba(163,143,133,.2);border-radius:var(--rs);padding:12px 14px;box-shadow:var(--shc);}
+.ttitle{font-size:13px;color:var(--ink);}
+.tsub{font-size:11px;color:var(--ink3);margin-top:1px;}
+.toggle{position:relative;width:38px;height:21px;background:var(--nu);border-radius:11px;transition:background .2s;flex-shrink:0;}
+.toggle.on{background:var(--sage);}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:15px;height:15px;background:#fff;border-radius:50%;transition:left .2s;box-shadow:0 1px 4px rgba(90,60,40,.18);}
+.toggle.on::after{left:20px;}
+
+/* ── TAG PILLS ──────────────────────────── */
+.tag-pill{display:inline-flex;align-items:center;background:var(--nu);color:var(--br);border-radius:12px;padding:3px 10px;font-size:11px;border:none;transition:all .15s;}
+.tag-pill.sel{background:var(--br);color:#fff;}
+
+/* ── OUTFIT BAR ─────────────────────────── */
+.ob{position:sticky;bottom:0;background:var(--ww);border-top:1px solid rgba(163,143,133,.15);padding:12px 18px;display:flex;align-items:center;gap:9px;z-index:40;box-shadow:0 -2px 14px rgba(90,60,40,.07);}
+.ob .oc{background:var(--sage);color:#fff;border-radius:20px;padding:4px 11px;font-size:12px;font-weight:500;white-space:nowrap;}
+.ob .os{flex:1;background:var(--br);color:#fff;border:none;border-radius:var(--rs);padding:10px;font-size:13px;font-weight:500;transition:all .2s;}
+.ob .os:hover{background:var(--ink2);}
+.ob .ocl{background:var(--cr);border:1px solid rgba(163,143,133,.28);color:var(--br);border-radius:var(--rs);padding:9px 13px;font-size:12px;transition:all .2s;}
+
+/* ── EMPTY ──────────────────────────────── */
+.empty{text-align:center;padding:36px 18px;color:var(--ink3);}
+.empty i{font-size:32px;margin-bottom:10px;display:block;color:var(--nu);}
+.empty p{font-size:13px;line-height:1.7;color:var(--tp);}
+
+/* ── OUTFIT CARD ────────────────────────── */
+.ocard{background:var(--ww);border:1px solid rgba(163,143,133,.15);border-radius:var(--r);padding:15px;margin-bottom:11px;box-shadow:var(--shc);}
+.och{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:11px;}
+.oc-name{font-size:14px;font-weight:500;color:var(--ink);}
+.oc-date{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin-top:2px;}
+.oc-loc{font-size:12px;color:var(--tp);margin-top:3px;display:flex;align-items:center;gap:4px;}
+.oc-actions{display:flex;gap:3px;align-items:center;}
+.oc-thumbs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:9px;}
+.oc-th{width:48px;height:48px;border-radius:8px;overflow:hidden;background:var(--nu);flex-shrink:0;}
+.oc-th img{width:100%;height:100%;object-fit:cover;}
+.oc-notes{font-size:12px;color:var(--tp);font-style:italic;line-height:1.55;}
+.oc-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;align-items:center;}
+.wb{font-size:10px;background:var(--cr);border:1px solid rgba(163,143,133,.22);border-radius:12px;padding:2px 9px;color:var(--tp);}
+.sched-badge{font-size:10px;background:rgba(123,103,93,.1);border-radius:12px;padding:2px 9px;color:var(--br);border:1px solid rgba(123,103,93,.2);}
+.fav-oc{background:none;border:none;font-size:17px;color:var(--nu);transition:color .15s;padding:3px;}
+.fav-oc.on{color:#C47A7A;}
+.pin-oc{background:none;border:none;font-size:16px;color:var(--nu);transition:color .15s;padding:3px;}
+.pin-oc.on{color:var(--br);}
+
+/* ── CALENDAR ───────────────────────────── */
+.cal-wrap{background:var(--ww);border:1px solid rgba(163,143,133,.15);border-radius:var(--r);padding:15px;margin-bottom:16px;box-shadow:var(--shc);}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;}
+.cal-nav span{font-size:13px;font-weight:500;color:var(--ink);}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px;}
+.cal-hdr{font-size:10px;text-align:center;color:var(--tp);padding:4px 0;text-transform:uppercase;letter-spacing:.04em;}
+.cal-d{aspect-ratio:1;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink2);}
+.cal-d.worn{background:var(--br);color:#fff;cursor:pointer;font-weight:500;}
+.cal-d.worn:hover{opacity:.84;}
+.cal-d.scheduled{background:var(--nu);color:var(--br);cursor:pointer;font-weight:500;border:1px solid var(--tp);}
+.cal-d.today{outline:1.5px solid var(--tp);outline-offset:-1px;}
+.cal-d.emp{color:var(--nu);}
+.cal-legend{display:flex;gap:14px;margin-top:8px;}
+.cal-legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--tp);}
+.cal-legend-dot{width:10px;height:10px;border-radius:50%;}
+
+/* ── SETTINGS ───────────────────────────── */
+.ss{margin-bottom:22px;}
+.ssl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--tp);margin-bottom:8px;padding:0 2px;}
+.slist{background:var(--ww);border:1px solid rgba(163,143,133,.15);border-radius:var(--r);overflow:hidden;box-shadow:var(--shc);}
+.srow{display:flex;align-items:center;padding:14px 16px;transition:background .15s;border-bottom:1px solid rgba(163,143,133,.1);gap:12px;}
+.srow:last-child{border-bottom:none;}
+.srow:hover{background:var(--cr);}
+.srow.danger:hover{background:#F9EFEF;}
+.srow.danger .sr-title{color:var(--err);}
+.srow.danger .sr-sub{color:#C49090;}
+.si{width:31px;height:31px;border-radius:8px;background:var(--cr);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;color:var(--tp);}
+.srow.danger .si{background:#F9EFEF;color:#C47A7A;}
+.st{flex:1;}
+.sr-title{font-size:14px;font-weight:500;color:var(--ink);}
+.sr-sub{font-size:11px;color:var(--tp);margin-top:1px;}
+
+/* ── PROFILE ────────────────────────────── */
+.phdr{background:var(--ww);border:1px solid rgba(163,143,133,.15);border-radius:var(--r);padding:20px;margin-bottom:15px;box-shadow:var(--shc);}
+.ptop{display:flex;align-items:center;gap:15px;margin-bottom:15px;}
+.pav{width:62px;height:62px;border-radius:50%;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:500;color:#fff;box-shadow:0 2px 10px rgba(90,60,40,.14);}
+.pav img{width:100%;height:100%;object-fit:cover;}
+.pname{font-size:17px;font-weight:500;color:var(--ink);}
+.phandle{font-size:12px;color:var(--tp);margin-top:2px;}
+.pbio{font-size:13px;color:var(--br);margin-top:5px;line-height:1.55;font-style:italic;}
+.pstats{display:flex;gap:18px;}
+.stn{font-size:18px;font-weight:500;color:var(--ink);}
+.stl{font-size:10px;color:var(--tp);text-transform:uppercase;letter-spacing:.07em;}
+
+/* ── PINNED STRIP ───────────────────────── */
+.pinned-strip{margin-bottom:18px;}
+.pinned-scroll{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
+.pinned-scroll::-webkit-scrollbar{display:none;}
+.pinned-item{flex-shrink:0;width:88px;cursor:pointer;}
+.pinned-img{width:88px;height:88px;border-radius:10px;overflow:hidden;background:var(--nu);display:grid;gap:1px;margin-bottom:5px;}
+.pinned-img.n1{grid-template-columns:1fr;}
+.pinned-img.n2{grid-template-columns:1fr 1fr;}
+.pinned-img.n4{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;}
+.pinned-img img{width:100%;height:100%;object-fit:cover;}
+.pinned-name{font-size:11px;color:var(--ink2);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* ── MODAL ──────────────────────────────── */
+.moverlay{position:fixed;inset:0;background:rgba(43,43,43,.32);z-index:200;display:flex;align-items:flex-end;justify-content:center;animation:fi .2s;}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+@keyframes su{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal{background:var(--ww);width:100%;max-width:430px;border-radius:20px 20px 0 0;padding:22px 20px 30px;max-height:92vh;overflow-y:auto;animation:su .25s;box-shadow:0 -4px 30px rgba(90,60,40,.1);}
+.mh{width:34px;height:4px;background:var(--nu);border-radius:2px;margin:0 auto 18px;}
+.mt{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:var(--br);margin-bottom:18px;}
+
+/* ── CONFIRM POPUP ──────────────────────── */
+.conf-overlay{position:fixed;inset:0;background:rgba(43,43,43,.38);z-index:300;display:flex;align-items:center;justify-content:center;padding:24px;animation:fi .15s;}
+.conf-box{background:var(--ww);border-radius:var(--r);padding:24px 22px;max-width:310px;width:100%;box-shadow:0 8px 32px rgba(90,60,40,.16);}
+.conf-title{font-size:16px;font-weight:500;color:var(--ink);margin-bottom:8px;}
+.conf-msg{font-size:13px;color:var(--tp);line-height:1.5;margin-bottom:20px;}
+.conf-btns{display:flex;gap:10px;}
+.conf-btns button{flex:1;padding:10px;border-radius:var(--rs);font-size:13px;margin-top:0;}
+
+/* ── SWATCHES ───────────────────────────── */
+.swatches{display:flex;gap:7px;flex-wrap:wrap;}
+.sw{width:27px;height:27px;border-radius:50%;border:2px solid transparent;transition:transform .15s;}
+.sw:hover{transform:scale(1.1);}
+.sw.sel{border-color:var(--br);}
+
+/* ── LOC BADGE ──────────────────────────── */
+.loc-badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;color:var(--br);background:rgba(123,103,93,.1);border-radius:20px;padding:2px 8px;}
+</style>
+</head>
+<body>
+
+<input type="file" id="fg" accept="image/*,.heic,.heif">
+<input type="file" id="fc" accept="image/*,.heic,.heif" capture="environment">
+<input type="file" id="fa" accept="image/*">
+
+<div id="root"></div>
+<div id="moverlay" class="moverlay hidden" onclick="oMO(event)">
+  <div class="modal" id="mcontent"></div>
+</div>
+<div id="conf-overlay" class="conf-overlay hidden"></div>
+
+<script>
+// ── CONSTANTS ──────────────────────────────────────────────────────────────
+const COLORS=[
+  {n:'Chalk',h:'#F2EDE6'},{n:'Linen',h:'#E8DDD0'},{n:'Sand',h:'#D9CAAF'},
+  {n:'Camel',h:'#C4A882'},{n:'Nude',h:'#DCCFC0'},{n:'Blush',h:'#D4B4AA'},
+  {n:'Rose',h:'#C49090'},{n:'Dusty',h:'#B08080'},{n:'Taupe',h:'#A38F85'},
+  {n:'Driftwood',h:'#8A7868'},{n:'Brown',h:'#7B675D'},{n:'Espresso',h:'#4A3C32'},
+  {n:'Ash',h:'#C8C2BC'},{n:'Stone',h:'#A8A09A'},{n:'Slate',h:'#7A726C'},
+  {n:'Charcoal',h:'#3C3835'},{n:'Black',h:'#1A1815'},{n:'White',h:'#F8F5F1'},
+];
+const CATS=['Tops','Bottoms','Dresses','Outerwear','Shoes','Accessories'];
+const CAT_ICONS={Tops:'ti-shirt',Bottoms:'ti-layout-bottombar',Dresses:'ti-dress',Outerwear:'ti-wind',Shoes:'ti-sneaker',Accessories:'ti-sunglasses'};
+const OCCASIONS=['Casual','Work','Dinner','Event','Beach','Vacation','Airport','Gym','Date Night','Weekend'];
+const LOC_CATS=['Casual','Work','Dinner','Event','Beach','Vacation','Airport','Gym','Date Night','Weekend','Other'];
+const AVC=['#A38F85','#9AA894','#B89890','#8A7868','#7B675D','#94908A','#C4A882','#7A726C'];
+
+// ── STATE ──────────────────────────────────────────────────────────────────
+let DB=JSON.parse(localStorage.getItem('fl_v2')||'null');
+if(!DB)DB={users:[],items:{},outfits:{},likes:{}};
+DB.users.forEach(u=>{
+  if(!u.bio)u.bio='';if(!u.avatar)u.avatar=null;
+  if(!u.favItems)u.favItems=[];if(!u.favOutfits)u.favOutfits=[];
+  if(!u.pinnedOutfits)u.pinnedOutfits=[];
+});
+// migrate fl_v1
+try{
+  const old=JSON.parse(localStorage.getItem('fl_v1')||'null');
+  if(old&&old.users&&DB.users.length===0){
+    DB=old;
+    DB.users.forEach(u=>{
+      if(!u.favItems)u.favItems=u.favoriteItems||[];
+      if(!u.favOutfits)u.favOutfits=u.favoriteOutfits||[];
+      if(!u.pinnedOutfits)u.pinnedOutfits=[];
+    });
+  }
+}catch(e){}
+
+let CU=null,TAB='closet',SEL=[],
+    PENDIMG=null,PENDAV=null,PICKCOL=COLORS[0].h,
+    CALMONTH=new Date(),searchQ='',OUTFIT_LOC_F='All',
+    editItemId=null,editOutfitId=null;
+
+// filter state
+let F_CATS=[],F_COLORS=[],F_OCCS=[],F_FAV=false,F_PRIV='All';
+let filterOpen=false;
+
+// closet view: 'folders' or categoryName
+let closetView='folders';
+
+// ── HELPERS ────────────────────────────────────────────────────────────────
+function save(){try{localStorage.setItem('fl_v2',JSON.stringify(DB));}catch(e){alert('Storage full.');}}
+function sync(){if(CU)CU=DB.users.find(u=>u.id===CU.id)||CU;}
+function avc(u){let h=0;for(let c of u)h=(h*31+c.charCodeAt(0))%AVC.length;return AVC[h];}
+function ini(n){return n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);}
+function fd(d){return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
+function shopLink(url){if(!url)return'';const s=url.startsWith('http')?url:'https://'+url;return`<a class="shop-link" href="${s}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()"><i class="ti ti-external-link"></i></a>`;}
+function avHTML(user,sz=27){const s=`width:${sz}px;height:${sz}px;font-size:${Math.round(sz*.38)}px;`;if(user.avatar)return`<div class="av" style="${s}"><img src="${user.avatar}" alt=""></div>`;return`<div class="av" style="${s}background:${avc(user.username)};">${ini(user.name)}</div>`;}
+function pwF(id,ph,ac=''){return`<div class="pw-wrap"><input class="fi" id="${id}" type="password" placeholder="${ph}"${ac?` autocomplete="${ac}"`:''}><button class="pw-eye" type="button" onclick="tPW('${id}',this)"><i class="ti ti-eye"></i></button></div>`;}
+function tPW(id,btn){const el=document.getElementById(id);if(!el)return;const s=el.type==='text';el.type=s?'password':'text';btn.querySelector('i').className=s?'ti ti-eye':'ti ti-eye-off';}
+function activeFilterCount(){return F_CATS.length+F_COLORS.length+F_OCCS.length+(F_FAV?1:0)+(F_PRIV!=='All'?1:0);}
+
+// ── IMAGE ──────────────────────────────────────────────────────────────────
+function compress(file,cb,maxW=1200){
+  const r=new FileReader();
+  r.onload=e=>{const img=new Image();img.onload=()=>{let w=img.width,h=img.height;if(w>maxW){h=Math.round(h*maxW/w);w=maxW;}const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);cb(c.toDataURL('image/jpeg',.82));};img.onerror=()=>{alert('Could not load image.');};img.src=e.target.result;};
+  r.onerror=()=>{alert('Error reading file.');};r.readAsDataURL(file);
+}
+function compressWL(file,cb){
+  const lb=document.getElementById('load-bar');if(lb){lb.style.display='block';lb.querySelector('.load-bar-in').style.width='30%';}
+  setTimeout(()=>{compress(file,d=>{if(lb){lb.querySelector('.load-bar-in').style.width='100%';setTimeout(()=>lb.style.display='none',400);}cb(d);});},50);
+}
+document.getElementById('fg').addEventListener('change',function(){if(this.files[0])compressWL(this.files[0],d=>{PENDIMG=d;refreshUZ();});this.value='';});
+document.getElementById('fc').addEventListener('change',function(){if(this.files[0])compressWL(this.files[0],d=>{PENDIMG=d;refreshUZ();});this.value='';});
+document.getElementById('fa').addEventListener('change',function(){if(this.files[0])compress(this.files[0],d=>{PENDAV=d;refreshAV();},400);this.value='';});
+
+function refreshUZ(){
+  const z=document.getElementById('uz');if(!z)return;
+  const mob=/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+  if(PENDIMG){z.classList.add('filled');z.innerHTML=`<img class="prev" src="${PENDIMG}" alt="preview"><div class="uz-acts"><button class="uz-act" onclick="event.stopPropagation();document.getElementById('fg').click()"><i class="ti ti-photo"></i> Change</button>${mob?`<button class="uz-act" onclick="event.stopPropagation();document.getElementById('fc').click()"><i class="ti ti-camera"></i> Retake</button>`:''}<button class="uz-act" onclick="event.stopPropagation();PENDIMG=null;refreshUZ()"><i class="ti ti-x"></i> Remove</button></div>`;}
+  else{z.classList.remove('filled');z.innerHTML=`<div class="uz-ph"><i class="ti ti-camera"></i><div class="uz-title">Add a photo</div><div class="uz-sub">JPG, PNG, HEIC${mob?'<br>Library or camera':''}</div></div><div class="uz-acts"><button class="uz-act" onclick="event.stopPropagation();document.getElementById('fg').click()"><i class="ti ti-photo"></i> Library</button>${mob?`<button class="uz-act" onclick="event.stopPropagation();document.getElementById('fc').click()"><i class="ti ti-camera"></i> Camera</button>`:''}</div>`;}
+}
+function refreshAV(){const w=document.getElementById('av-ring');if(!w)return;const src=PENDAV||(CU&&CU.avatar)||null;if(src){w.innerHTML=`<img src="${src}" alt=""><div class="av-ov"><i class="ti ti-camera"></i></div>`;}else{w.style.background=avc(CU.username);w.innerHTML=`<span style="font-size:26px;font-weight:500;color:#fff">${ini(CU.name)}</span><div class="av-ov"><i class="ti ti-camera"></i></div>`;}}
+
+// ── CONFIRM POPUP ──────────────────────────────────────────────────────────
+function confirm2(title,msg,onYes){
+  const ov=document.getElementById('conf-overlay');ov.classList.remove('hidden');
+  ov.innerHTML=`<div class="conf-box"><div class="conf-title">${title}</div><div class="conf-msg">${msg}</div><div class="conf-btns"><button class="bs" onclick="document.getElementById('conf-overlay').classList.add('hidden')">Cancel</button><button class="bd" onclick="document.getElementById('conf-overlay').classList.add('hidden');(${onYes.toString()})()">Delete</button></div></div>`;
+}
+
+// ── RENDER ─────────────────────────────────────────────────────────────────
+function render(){if(!CU)renderAuth();else renderApp();}
+
+// ── AUTH ───────────────────────────────────────────────────────────────────
+function renderAuth(){
+  document.getElementById('root').innerHTML=`<div class="auth-bg"><div class="auth-logo">FitLink</div><div class="auth-tag">your personal wardrobe</div><div class="atabs"><button class="atab active" id="atl" onclick="swA('login')">Sign in</button><button class="atab" id="ats" onclick="swA('signup')">Create account</button></div><div id="aform"></div></div>`;
+  authF('login');
+}
+let AM='login';
+function swA(m){AM=m;document.getElementById('atl').classList.toggle('active',m==='login');document.getElementById('ats').classList.toggle('active',m==='signup');authF(m);}
+function authF(m){
+  const el=document.getElementById('aform');
+  if(m==='login')el.innerHTML=`<div class="fg"><label class="fl">Username</label><input class="fi" id="lu" placeholder="username" autocomplete="username"></div><div class="fg"><label class="fl">Password</label>${pwF('lp','••••••••','current-password')}</div><div class="check-row"><input type="checkbox" id="keepme"><label for="keepme">Keep me signed in</label></div><div id="aerr"></div><button class="bp bmt" onclick="doLogin()">Sign in</button><div style="text-align:center;margin-top:12px;"><button class="tlink" onclick="showForgot()">Forgot password?</button></div>${DB.users.length?`<p style="font-size:12px;color:var(--tp);text-align:center;margin-top:10px;">Try: <strong>${DB.users[0].username}</strong></p>`:''}`;
+  else el.innerHTML=`<div class="fg"><label class="fl">Full name</label><input class="fi" id="sn" placeholder="Jane Smith"></div><div class="fg"><label class="fl">Username</label><input class="fi" id="su" placeholder="janesmith"></div><div class="fg"><label class="fl">Password</label>${pwF('sp','••••••••','new-password')}</div><div id="aerr"></div><button class="bp bmt" onclick="doSignup()">Create account</button>`;
+}
+function doLogin(){
+  const u=document.getElementById('lu').value.trim().toLowerCase(),p=document.getElementById('lp').value;
+  const user=DB.users.find(x=>x.username===u&&x.password===p);
+  if(!user){document.getElementById('aerr').innerHTML='<div class="aerr">Incorrect username or password.</div>';return;}
+  const keep=document.getElementById('keepme').checked;
+  if(keep)localStorage.setItem('fl_session',user.id);
+  CU=user;TAB='closet';closetView='folders';render();
+}
+function doSignup(){
+  const name=document.getElementById('sn').value.trim(),u=document.getElementById('su').value.trim().toLowerCase().replace(/[^a-z0-9_]/g,''),p=document.getElementById('sp').value,err=document.getElementById('aerr');
+  if(!name||!u||!p){err.innerHTML='<div class="aerr">Please fill in all fields.</div>';return;}
+  if(p.length<4){err.innerHTML='<div class="aerr">Password must be at least 4 characters.</div>';return;}
+  if(DB.users.find(x=>x.username===u)){err.innerHTML='<div class="aerr">Username taken.</div>';return;}
+  const user={id:'u'+Date.now(),username:u,name,password:p,bio:'',avatar:null,favItems:[],favOutfits:[],pinnedOutfits:[],joinedAt:Date.now()};
+  DB.users.push(user);DB.items[user.id]=[];DB.outfits[user.id]=[];DB.likes[user.id]=[];
+  save();CU=user;TAB='closet';closetView='folders';render();
+}
+function showForgot(){showM(`<div class="mh"></div><div class="mt">Reset password</div><p style="font-size:13px;color:var(--tp);margin-bottom:16px;line-height:1.6;">Enter your username and choose a new password.</p><div class="fg"><label class="fl">Username</label><input class="fi" id="fpu" placeholder="your username"></div><div class="fg"><label class="fl">New password</label>${pwF('fpn','••••••••','new-password')}</div><div class="fg"><label class="fl">Confirm password</label>${pwF('fpc','••••••••','new-password')}</div><div id="fpmsg"></div><button class="bp bmt" onclick="doForgot()">Reset password</button><button class="bs" onclick="closeM()">Cancel</button>`);}
+function doForgot(){const u=document.getElementById('fpu').value.trim().toLowerCase(),np=document.getElementById('fpn').value,cp=document.getElementById('fpc').value,msg=document.getElementById('fpmsg');const user=DB.users.find(x=>x.username===u);if(!user){msg.innerHTML='<div class="aerr">Username not found.</div>';return;}if(np.length<4){msg.innerHTML='<div class="aerr">Min 4 characters.</div>';return;}if(np!==cp){msg.innerHTML='<div class="aerr">Passwords do not match.</div>';return;}user.password=np;save();msg.innerHTML='<div class="aok">Password reset! Sign in now.</div>';setTimeout(closeM,1600);}
+
+// Auto-login from session
+(function(){
+  const sid=localStorage.getItem('fl_session');
+  if(sid){const user=DB.users.find(u=>u.id===sid);if(user){CU=user;TAB='closet';closetView='folders';}}
+})();
+
+// ── APP SHELL ──────────────────────────────────────────────────────────────
+function renderApp(){
+  sync();
+  const chipAv=CU.avatar?`<div class="av" style="width:27px;height:27px;"><img src="${CU.avatar}" alt=""></div>`:`<div class="av" style="width:27px;height:27px;background:${avc(CU.username)};font-size:11px;">${ini(CU.name)}</div>`;
+  document.getElementById('root').innerHTML=`<div class="app">
+    <div class="topbar">
+      <div class="topbar-row">
+        <div class="wordmark">FitLink</div>
+        <div class="chip" onclick="goS()" style="cursor:pointer;">${chipAv}<span class="chip-name">${CU.username}</span></div>
+      </div>
+      <nav class="nav-strip">
+        <button class="nb ${TAB==='closet'?'active':''}" onclick="swT('closet')"><i class="ti ti-shirt"></i><span>Closet</span></button>
+        <button class="nb ${TAB==='outfits'?'active':''}" onclick="swT('outfits')"><i class="ti ti-layout-grid"></i><span>Outfits</span></button>
+        <button class="nb ${TAB==='history'?'active':''}" onclick="swT('history')"><i class="ti ti-calendar"></i><span>History</span></button>
+        <button class="nb ${TAB==='favs'?'active':''}" onclick="swT('favs')"><i class="ti ti-heart"></i><span>Favorites</span></button>
+        <button class="nb ${TAB==='settings'?'active':''}" onclick="swT('settings')"><i class="ti ti-settings"></i><span>Settings</span></button>
+      </nav>
+    </div>
+    <div class="content" id="mc"></div>
+    <div class="ob hidden" id="ob">
+      <span class="oc" id="obc">0 items</span>
+      <button class="ocl" onclick="clrSel()">Clear</button>
+      <button class="os" onclick="openSaveOutfit()">Save outfit →</button>
+    </div>
+  </div>`;
+  rTab();
+}
+function swT(t){TAB=t;if(t==='closet')closetView='folders';if(t!=='closet')SEL=[];renderApp();}
+function goS(){TAB='settings';renderApp();}
+function rTab(){const el=document.getElementById('mc');if(TAB==='closet')rCloset(el);else if(TAB==='outfits')rOutfits(el);else if(TAB==='history')rHistory(el);else if(TAB==='favs')rFavs(el);else if(TAB==='settings')rSettings(el);}
+
+// ── CLOSET ─────────────────────────────────────────────────────────────────
+function myi(){return DB.items[CU.id]||[];}
+function myo(){return DB.outfits[CU.id]||[];}
+
+function rCloset(el){
+  if(closetView==='folders'){rFolders(el);}
+  else{rCatItems(el,closetView);}
+}
+
+function rFolders(el){
+  const items=myi();
+  const pinnedOs=myo().filter(o=>(CU.pinnedOutfits||[]).includes(o.id));
+
+  let pinnedHTML='';
+  if(pinnedOs.length>0){
+    pinnedHTML=`<div class="pinned-strip">
+      <div class="section-label"><i class="ti ti-pin" style="font-size:12px;"></i> Pinned outfits</div>
+      <div class="pinned-scroll">${pinnedOs.map(o=>pinnedMini(o)).join('')}</div>
+    </div>`;
+  }
+
+  const folderRows=CATS.map(cat=>{
+    const catItems=items.filter(i=>i.category===cat);
+    const count=catItems.length;
+    const previews=catItems.filter(i=>i.imageData).slice(0,4);
+    const gridClass=previews.length>=4?'n4':previews.length===3?'n3':previews.length===2?'n2':'n1';
+    const icon=CAT_ICONS[cat]||'ti-shirt';
+    const previewCells=previews.length>0
+      ?previews.map(i=>`<div class="pv-cell"><img src="${i.imageData}" alt=""></div>`).join('')
+      :`<div class="pv-cell"><span class="pv-empty"><i class="ti ${icon}"></i></span></div>`;
+    return `<div class="cat-folder" onclick="openCat('${cat}')">
+      <div class="cat-folder-preview ${gridClass}">${previewCells}</div>
+      <div class="cat-folder-info">
+        <div class="cat-folder-name">${cat}</div>
+        <div class="cat-folder-count">${count} item${count!==1?'s':''}</div>
+      </div>
+    </div>`;
+  });
+
+  el.innerHTML=`
+    ${pinnedHTML}
+    <div class="cat-grid">
+      ${folderRows.join('')}
+      <div class="add-item-tile" onclick="openAddItem()">
+        <i class="ti ti-plus"></i>
+        <span>Add item</span>
+      </div>
+    </div>`;
+  updateOB();
+}
+
+function openCat(cat){closetView=cat;rCatItems(document.getElementById('mc'),cat);}
+
+function rCatItems(el,cat){
+  const fc=activeFilterCount();
+  let items=myi().filter(i=>i.category===cat);
+  if(searchQ)items=items.filter(i=>(i.brand||'').toLowerCase().includes(searchQ.toLowerCase())||(i.notes||'').toLowerCase().includes(searchQ.toLowerCase()));
+  if(F_COLORS.length)items=items.filter(i=>F_COLORS.includes(i.colorName));
+  if(F_OCCS.length)items=items.filter(i=>(i.occasions||[]).some(o=>F_OCCS.includes(o)));
+  if(F_FAV)items=items.filter(i=>(CU.favItems||[]).includes(i.id));
+  if(F_PRIV==='Public')items=items.filter(i=>i.isPublic);
+  if(F_PRIV==='Private')items=items.filter(i=>!i.isPublic);
+
+  el.innerHTML=`
+    <div class="cat-header">
+      <button class="back-btn" onclick="closetView='folders';rCloset(document.getElementById('mc'))"><i class="ti ti-arrow-left"></i> Closet</button>
+      <button class="bp" style="width:auto;padding:8px 16px;font-size:12px;" onclick="openAddItemCat('${cat}')"><i class="ti ti-plus"></i> Add</button>
+    </div>
+    <div class="pt" style="margin-bottom:12px;">${cat}</div>
+    <div class="search-wrap"><i class="ti ti-search search-icon"></i><input class="fi" id="sq" placeholder="Search ${cat.toLowerCase()}…" value="${searchQ}" oninput="searchQ=this.value;rCatItems(document.getElementById('mc'),'${cat}')"></div>
+    <div class="filter-btn-row">
+      <button class="filter-toggle-btn ${filterOpen?'active':''}" onclick="toggleFilter('${cat}')">
+        <i class="ti ti-sliders-horizontal"></i> Filter${fc>0?` <span class="filter-count">${fc}</span>`:''}
+      </button>
+      ${fc>0?`<button class="bsm" onclick="clearFilters();rCatItems(document.getElementById('mc'),'${cat}')">Clear</button>`:''}
+    </div>
+    <div id="filter-panel-wrap">${filterOpen?buildFilterPanel(cat):''}</div>
+    <div class="grid2" id="cg"></div>
+    ${items.length===0?`<div class="empty"><i class="ti ti-hanger"></i><p>No items${myi().filter(i=>i.category===cat).length===0?'.<br>Tap Add to get started.':'.'}</p></div>`:''}`;
+  updateOB();rGrid(items,cat);
+}
+
+function toggleFilter(cat){filterOpen=!filterOpen;rCatItems(document.getElementById('mc'),cat);}
+function clearFilters(){F_CATS=[];F_COLORS=[];F_OCCS=[];F_FAV=false;F_PRIV='All';filterOpen=false;}
+
+function buildFilterPanel(cat){
+  return `<div class="filter-panel">
+    <div class="filter-section">
+      <div class="filter-section-label">Color</div>
+      <div class="fchips">${COLORS.map(c=>`<button class="fchip ${F_COLORS.includes(c.n)?'on':''}" onclick="tFC('${c.n}','${cat}')">${c.n}</button>`).join('')}</div>
+    </div>
+    <div class="filter-section">
+      <div class="filter-section-label">Occasion</div>
+      <div class="fchips">${OCCASIONS.map(o=>`<button class="fchip ${F_OCCS.includes(o)?'on':''}" onclick="tFO('${o}','${cat}')">${o}</button>`).join('')}</div>
+    </div>
+    <div class="filter-section">
+      <div class="filter-section-label">Show</div>
+      <div class="fchips">
+        <button class="fchip ${F_FAV?'on':''}" onclick="F_FAV=!F_FAV;rCatItems(document.getElementById('mc'),'${cat}')"><i class="ti ti-heart"></i> Favorites only</button>
+        <button class="fchip ${F_PRIV==='Public'?'on':''}" onclick="F_PRIV=F_PRIV==='Public'?'All':'Public';rCatItems(document.getElementById('mc'),'${cat}')">Public</button>
+        <button class="fchip ${F_PRIV==='Private'?'on':''}" onclick="F_PRIV=F_PRIV==='Private'?'All':'Private';rCatItems(document.getElementById('mc'),'${cat}')">Private</button>
+      </div>
+    </div>
+  </div>`;
+}
+function tFC(n,cat){const i=F_COLORS.indexOf(n);if(i===-1)F_COLORS.push(n);else F_COLORS.splice(i,1);rCatItems(document.getElementById('mc'),cat);}
+function tFO(o,cat){const i=F_OCCS.indexOf(o);if(i===-1)F_OCCS.push(o);else F_OCCS.splice(i,1);rCatItems(document.getElementById('mc'),cat);}
+
+function rGrid(items,cat){
+  const g=document.getElementById('cg');if(!g)return;
+  const fi=CU.favItems||[];
+  g.innerHTML=items.map(item=>{
+    const sel=SEL.includes(item.id),fav=fi.includes(item.id);
+    return `<div class="ic ${sel?'sel':''}" onclick="tSel('${item.id}')">
+      <div class="ic-img">
+        ${!item.isPublic?'<span class="priv-b">Private</span>':''}
+        ${item.imageData?`<img src="${item.imageData}" alt="${item.brand||item.category||''}">`:'<span class="no-img">No photo</span>'}
+        <button class="fav-b ${fav?'on':''}" onclick="event.stopPropagation();tFavItem('${item.id}')" aria-label="Favorite">
+          <i class="ti ti-heart${fav?'-filled':''}"></i>
+        </button>
+      </div>
+      <div class="ic-info">
+        <div class="ic-brand">${item.brand||item.category||'Item'}</div>
+        <div class="ic-meta">
+          ${item.color?`<span class="cdot" style="background:${item.color};"></span>`:''}
+          <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.colorName||item.category||''}</span>
+          ${shopLink(item.link)}
+        </div>
+      </div>
+      <div class="ic-actions">
+        <button class="icon-btn" style="font-size:16px;" onclick="event.stopPropagation();openEditItem('${item.id}')" title="Edit"><i class="ti ti-edit"></i></button>
+        <button class="icon-btn" style="font-size:16px;color:var(--err);" onclick="event.stopPropagation();deleteItem('${item.id}','${cat||item.category}')" title="Delete"><i class="ti ti-trash"></i></button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function tSel(id){const i=SEL.indexOf(id);if(i===-1)SEL.push(id);else SEL.splice(i,1);
+  const g=document.getElementById('cg');if(!g)return;
+  g.querySelectorAll('.ic').forEach(el=>{
+    const iid=el.querySelector('.ic-img img')?.alt;
+  });
+  // re-render grid in place
+  const cat=closetView!=='folders'?closetView:'';
+  let items=myi();if(cat)items=items.filter(i=>i.category===cat);
+  if(searchQ)items=items.filter(i=>(i.brand||'').toLowerCase().includes(searchQ.toLowerCase()));
+  if(F_COLORS.length)items=items.filter(i=>F_COLORS.includes(i.colorName));
+  if(F_OCCS.length)items=items.filter(i=>(i.occasions||[]).some(o=>F_OCCS.includes(o)));
+  if(F_FAV)items=items.filter(i=>(CU.favItems||[]).includes(i.id));
+  rGrid(items,cat);updateOB();
+}
+function updateOB(){const ob=document.getElementById('ob');if(!ob)return;if(SEL.length>0){ob.classList.remove('hidden');document.getElementById('obc').textContent=SEL.length+' item'+(SEL.length!==1?'s':'');}else ob.classList.add('hidden');}
+function clrSel(){SEL=[];const cat=closetView!=='folders'?closetView:'';if(cat)rCatItems(document.getElementById('mc'),cat);else rFolders(document.getElementById('mc'));}
+function tFavItem(id){const db=DB.users.find(u=>u.id===CU.id);if(!db.favItems)db.favItems=[];const i=db.favItems.indexOf(id);if(i===-1)db.favItems.push(id);else db.favItems.splice(i,1);sync();save();const cat=closetView!=='folders'?closetView:'';let items=myi();if(cat)items=items.filter(i=>i.category===cat);if(F_FAV)items=items.filter(i=>(CU.favItems||[]).includes(i.id));rGrid(items,cat);}
+function deleteItem(id,cat){confirm2('Delete item','This will permanently remove this item from your closet.',()=>{DB.items[CU.id]=(DB.items[CU.id]||[]).filter(i=>i.id!==id);save();if(closetView==='folders')rFolders(document.getElementById('mc'));else rCatItems(document.getElementById('mc'),cat||closetView);});}
+
+function pinnedMini(o){
+  const oItems=(DB.items[CU.id]||[]).filter(i=>o.itemIds.includes(i.id)&&i.imageData);
+  const t=oItems.slice(0,4);
+  const gc=t.length>=4?'n4':t.length===2?'n2':'n1';
+  return `<div class="pinned-item" onclick="swT('history');setTimeout(()=>scrollToOutfit('${o.id}'),200)">
+    <div class="pinned-img ${gc}">${t.map(i=>`<img src="${i.imageData}" alt="">`).join('')}</div>
+    <div class="pinned-name">${o.name||'Outfit'}</div>
+  </div>`;
+}
+
+// ── ADD / EDIT ITEM ────────────────────────────────────────────────────────
+let selOccs=[];
+function openAddItem(){openAddItemCat(closetView!=='folders'?closetView:'');}
+function openAddItemCat(cat){PENDIMG=null;PICKCOL=COLORS[0].h;selOccs=[];editItemId=null;itemModal(null,cat);}
+function openEditItem(id){const item=myi().find(i=>i.id===id);if(!item)return;PENDIMG=item.imageData||null;PICKCOL=item.color||COLORS[0].h;selOccs=item.occasions||[];editItemId=id;itemModal(item,item.category);}
+
+function itemModal(item,defaultCat){
+  showM(`<div class="mh"></div><div class="mt">${item?'Edit item':'Add to closet'}</div>
+    <div class="fg"><label class="fl">Photo</label>
+      <div class="uz" id="uz" onclick="document.getElementById('fg').click()" style="cursor:pointer;"></div>
+      <div class="load-bar" id="load-bar" style="display:none;"><div class="load-bar-in"></div></div>
+    </div>
+    <div class="fg"><label class="fl">Brand / Name (optional)</label><input class="fi" id="ibrand" placeholder="e.g. Zara, H&M…" value="${item?.brand||''}"></div>
+    <div class="fg"><label class="fl">Category</label><select class="fsel" id="icat"><option value="">Select…</option>${CATS.map(c=>`<option ${(item?.category||defaultCat)===c?'selected':''}>${c}</option>`).join('')}</select></div>
+    <div class="fg"><label class="fl">Color</label>
+      <div id="cnlbl" style="font-size:11px;color:var(--tp);margin-bottom:6px;">${COLORS.find(c=>c.h===PICKCOL)?.n||COLORS[0].n}</div>
+      <div class="swatches" id="csw"></div>
+    </div>
+    <div class="fg"><label class="fl">Occasions</label><div style="display:flex;gap:6px;flex-wrap:wrap;" id="occ-sel">${OCCASIONS.map(o=>`<button type="button" class="tag-pill ${selOccs.includes(o)?'sel':''}" onclick="tOcc('${o}',this)">${o}</button>`).join('')}</div></div>
+    <div class="fg"><label class="fl">Notes (optional)</label><textarea class="fi" id="inotes" placeholder="Any notes…">${item?.notes||''}</textarea></div>
+    <div class="fg"><label class="fl">Shopping link (optional)</label><input class="fi" id="ilink" type="url" placeholder="https://…" value="${item?.link||''}"></div>
+    <div class="fg"><label class="fl">Visibility</label>
+      <div class="trow" onclick="flipPUB()"><div><div class="ttitle">Public item</div><div class="tsub">Visible to others</div></div><div class="toggle ${(item?.isPublic||false)?'on':''}" id="pubt"></div></div>
+    </div>
+    <button class="bp bmt" onclick="saveItem()">${item?'Save changes':'Add to closet'}</button>
+    <button class="bs" onclick="closeM()">Cancel</button>`);
+  refreshUZ();buildSwatches();
+
+  const z=document.getElementById('uz');
+  z.addEventListener('dragover',e=>{e.preventDefault();z.style.borderColor='var(--br)';});
+  z.addEventListener('dragleave',()=>z.style.borderColor='');
+  z.addEventListener('drop',e=>{e.preventDefault();z.style.borderColor='';const f=e.dataTransfer.files[0];if(f&&f.type.startsWith('image/'))compressWL(f,d=>{PENDIMG=d;refreshUZ();});});
+}
+
+let PUB=false;
+function flipPUB(){PUB=!PUB;const t=document.getElementById('pubt');if(t)t.classList.toggle('on',PUB);}
+function tOcc(o,btn){const i=selOccs.indexOf(o);if(i===-1)selOccs.push(o);else selOccs.splice(i,1);btn.classList.toggle('sel',selOccs.includes(o));}
+function buildSwatches(){const cs=document.getElementById('csw');if(!cs)return;COLORS.forEach((c,i)=>{const s=document.createElement('div');s.className='sw'+(c.h===PICKCOL?' sel':'');s.style.background=c.h;s.style.border=c.h===PICKCOL?'2px solid var(--br)':'2px solid transparent';s.title=c.n;s.onclick=()=>{PICKCOL=c.h;document.getElementById('cnlbl').textContent=c.n;cs.querySelectorAll('.sw').forEach(x=>{x.classList.remove('sel');x.style.border='2px solid transparent';});s.classList.add('sel');s.style.border='2px solid var(--br)';};cs.appendChild(s);});}
+function saveItem(){
+  const brand=document.getElementById('ibrand').value.trim();
+  const cat=document.getElementById('icat').value;
+  const colorName=COLORS.find(c=>c.h===PICKCOL)?.n||'';
+  const isPub=document.getElementById('pubt')?.classList.contains('on')||false;
+  if(!cat&&!PENDIMG){alert('Please add a photo or select a category.');return;}
+  if(!DB.items[CU.id])DB.items[CU.id]=[];
+  if(editItemId){const item=DB.items[CU.id].find(i=>i.id===editItemId);if(item){item.imageData=PENDIMG;item.brand=brand;item.category=cat;item.color=PICKCOL;item.colorName=colorName;item.occasions=selOccs;item.notes=document.getElementById('inotes').value.trim();item.link=document.getElementById('ilink').value.trim();item.isPublic=isPub;}}
+  else{DB.items[CU.id].push({id:'i'+Date.now(),imageData:PENDIMG,brand,category:cat,color:PICKCOL,colorName,occasions:selOccs,notes:document.getElementById('inotes').value.trim(),link:document.getElementById('ilink').value.trim(),isPublic:isPub});}
+  save();closeM();
+  if(cat)closetView=cat;
+  if(closetView==='folders')rFolders(document.getElementById('mc'));
+  else rCatItems(document.getElementById('mc'),closetView);
+}
+
+// ── OUTFITS ────────────────────────────────────────────────────────────────
+function rOutfits(el){
+  if(SEL.length===0){el.innerHTML=`<div class="pt">Create an outfit</div><p style="font-size:13px;color:var(--tp);line-height:1.7;margin-bottom:16px;">Go to your Closet, tap items to select them, then come back here.</p><div class="empty"><i class="ti ti-layout-grid"></i><p>No items selected yet.</p></div>`;return;}
+  const selItems=myi().filter(i=>SEL.includes(i.id));
+  el.innerHTML=`<div class="pt">Create an outfit</div>
+    <p style="font-size:13px;color:var(--tp);margin-bottom:13px;">${selItems.length} item${selItems.length!==1?'s':''} selected</p>
+    <div style="display:flex;gap:9px;flex-wrap:wrap;margin-bottom:20px;">${selItems.map(i=>`<div><div class="oc-th">${i.imageData?`<img src="${i.imageData}" alt="">`:''}</div><div style="font-size:10px;color:var(--tp);margin-top:3px;max-width:48px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${i.brand||i.category||''}</div></div>`).join('')}</div>
+    <button class="bp" onclick="openSaveOutfit()">Save this outfit →</button>
+    <button class="bs" onclick="clrSel();swT('closet')">Clear selection</button>`;
+}
+
+function openSaveOutfit(outfitId){
+  editOutfitId=outfitId||null;
+  const existing=outfitId?myo().find(o=>o.id===outfitId):null;
+  const selItems=existing?myi().filter(i=>existing.itemIds.includes(i.id)):myi().filter(i=>SEL.includes(i.id));
+  showM(`<div class="mh"></div><div class="mt">${existing?'Edit outfit':'Save outfit'}</div>
+    <div style="display:flex;gap:7px;margin-bottom:16px;flex-wrap:wrap;">${selItems.map(i=>`<div class="oc-th">${i.imageData?`<img src="${i.imageData}" alt="">`:''}</div>`).join('')}</div>
+    <div class="fg"><label class="fl">Outfit name (optional)</label><input class="fi" id="oname" placeholder="e.g. Sunday brunch look" value="${existing?.name||''}"></div>
+
+    <div style="background:var(--cr);border-radius:var(--rs);padding:14px;margin-bottom:14px;">
+      <div class="section-label" style="margin-bottom:10px;">Previously worn</div>
+      <div class="fg" style="margin-bottom:10px;"><label class="fl">Date worn</label><input class="fi" id="odate" type="date" value="${existing?.date||new Date().toISOString().split('T')[0]}"></div>
+      <div class="fg" style="margin-bottom:10px;"><label class="fl">Location / Occasion</label><select class="fsel" id="oloc"><option value="">Select…</option>${LOC_CATS.map(l=>`<option ${existing?.locCat===l?'selected':''}>${l}</option>`).join('')}</select></div>
+      <div class="fg" style="margin-bottom:0;"><label class="fl">Notes (optional)</label><textarea class="fi" id="onotes" placeholder="How did it feel?">${existing?.notes||''}</textarea></div>
+    </div>
+
+    <div style="background:var(--cr);border-radius:var(--rs);padding:14px;margin-bottom:14px;">
+      <div class="section-label" style="margin-bottom:10px;">Schedule for a future date</div>
+      <div class="fg" style="margin-bottom:10px;"><label class="fl">Date</label><input class="fi" id="sched-date" type="date" value="${existing?.schedDate||''}"></div>
+      <div class="fg" style="margin-bottom:10px;"><label class="fl">Time (optional)</label><input class="fi" id="sched-time" type="time" value="${existing?.schedTime||''}"></div>
+      <div class="fg" style="margin-bottom:0;"><label class="fl">Event / Location</label><select class="fsel" id="sched-loc"><option value="">Select…</option>${LOC_CATS.map(l=>`<option ${existing?.schedLoc===l?'selected':''}>${l}</option>`).join('')}</select></div>
+    </div>
+
+    <div class="fg"><label class="fl">Visibility</label>
+      <div class="trow" onclick="document.getElementById('opubt').classList.toggle('on')"><div><div class="ttitle">Public outfit</div><div class="tsub">Visible to others</div></div><div class="toggle ${existing?.isPublic?'on':''}" id="opubt"></div></div>
+    </div>
+    <button class="bp bmt" onclick="saveOutfit()">Save outfit</button>
+    <button class="bs" onclick="closeM()">Cancel</button>`);
+}
+
+function saveOutfit(){
+  const date=document.getElementById('odate').value;
+  if(!date){alert('Please add a date worn.');return;}
+  const schedDate=document.getElementById('sched-date').value;
+  if(!DB.outfits[CU.id])DB.outfits[CU.id]=[];
+  const isPub=document.getElementById('opubt').classList.contains('on');
+  if(editOutfitId){
+    const o=DB.outfits[CU.id].find(x=>x.id===editOutfitId);
+    if(o){o.name=document.getElementById('oname').value.trim()||'Outfit';o.date=date;o.locCat=document.getElementById('oloc').value;o.notes=document.getElementById('onotes').value.trim();o.isPublic=isPub;o.lastWorn=date;o.schedDate=schedDate;o.schedTime=document.getElementById('sched-time').value;o.schedLoc=document.getElementById('sched-loc').value;}
+  }else{
+    DB.outfits[CU.id].unshift({id:'o'+Date.now(),name:document.getElementById('oname').value.trim()||'Outfit',date,locCat:document.getElementById('oloc').value,notes:document.getElementById('onotes').value.trim(),itemIds:[...SEL],wearCount:1,lastWorn:date,isPublic:isPub,schedDate,schedTime:document.getElementById('sched-time').value,schedLoc:document.getElementById('sched-loc').value});
+  }
+  save();clrSel();closeM();TAB='history';renderApp();
+}
+
+// ── HISTORY ────────────────────────────────────────────────────────────────
+function rHistory(el){
+  const outfits=myo();
+  const now=new Date(CALMONTH);
+  const yr=now.getFullYear(),mo=now.getMonth();
+  const firstDay=new Date(yr,mo,1).getDay();
+  const daysInMo=new Date(yr,mo+1,0).getDate();
+  const today=new Date();
+  const moLabel=now.toLocaleDateString('en-US',{month:'long',year:'numeric'});
+
+  const worn={},sched={};
+  outfits.forEach(o=>{
+    if(o.date){const d=new Date(o.date);if(d.getFullYear()===yr&&d.getMonth()===mo){const day=d.getDate();if(!worn[day])worn[day]=[];worn[day].push(o);}}
+    if(o.schedDate){const d=new Date(o.schedDate);if(d.getFullYear()===yr&&d.getMonth()===mo){const day=d.getDate();if(!sched[day])sched[day]=[];sched[day].push(o);}}
+  });
+
+  let calCells='';
+  for(let i=0;i<firstDay;i++)calCells+=`<div class="cal-d emp"></div>`;
+  for(let d=1;d<=daysInMo;d++){
+    const isToday=today.getFullYear()===yr&&today.getMonth()===mo&&today.getDate()===d;
+    const hasW=worn[d]?.length>0,hasS=sched[d]?.length>0;
+    const ids=hasW?worn[d].map(o=>`'${o.id}'`).join(','):hasS?sched[d].map(o=>`'${o.id}'`).join(','):'';
+    calCells+=`<div class="cal-d ${hasW?'worn':hasS?'scheduled':''} ${isToday?'today':''}" ${(hasW||hasS)?`onclick="scrollToOutfit(${ids})"`:''} title="${d}${isToday?' (today)':''}${hasW?' — worn':''}${hasS?' — scheduled':''}">${d}</div>`;
+  }
+
+  const usedLocs=[...new Set(outfits.map(o=>o.locCat||o.schedLoc).filter(Boolean))];
+  const locF=usedLocs.length>0?`<div style="display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;margin-bottom:14px;scrollbar-width:none;">${['All',...usedLocs].map(l=>`<button class="bsm" style="${OUTFIT_LOC_F===l?'background:var(--br);border-color:var(--br);color:#fff;':''}" onclick="OUTFIT_LOC_F='${l}';rHistory(document.getElementById('mc'))">${l}</button>`).join('')}</div>`:'';
+
+  let filtered=outfits;
+  if(OUTFIT_LOC_F!=='All')filtered=outfits.filter(o=>o.locCat===OUTFIT_LOC_F||o.schedLoc===OUTFIT_LOC_F);
+
+  el.innerHTML=`<div class="pt">History</div>
+    <div class="cal-wrap">
+      <div class="cal-nav">
+        <button class="bsm" onclick="CALMONTH=new Date(CALMONTH.getFullYear(),CALMONTH.getMonth()-1,1);rHistory(document.getElementById('mc'))">‹</button>
+        <span>${moLabel}</span>
+        <button class="bsm" onclick="CALMONTH=new Date(CALMONTH.getFullYear(),CALMONTH.getMonth()+1,1);rHistory(document.getElementById('mc'))">›</button>
+      </div>
+      <div class="cal-grid">${['Su','Mo','Tu','We','Th','Fr','Sa'].map(d=>`<div class="cal-hdr">${d}</div>`).join('')}${calCells}</div>
+      <div class="cal-legend">
+        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--br);"></div>Worn</div>
+        <div class="cal-legend-item"><div class="cal-legend-dot" style="background:var(--nu);border:1px solid var(--tp);"></div>Scheduled</div>
+      </div>
+    </div>
+    ${locF}
+    <div id="outfit-list">${filtered.length===0?`<div class="empty"><i class="ti ti-calendar"></i><p>No outfits yet.</p></div>`:filtered.map(o=>outfitCardHTML(o,myi(),true)).join('')}</div>`;
+}
+
+function scrollToOutfit(...ids){
+  setTimeout(()=>{const el=document.getElementById('oc-'+ids[0]);if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.style.background='rgba(163,143,133,.08)';setTimeout(()=>el.style.background='',1200);}},100);
+}
+
+function outfitCardHTML(o,items,showWear=false){
+  const oItems=items.filter(i=>o.itemIds.includes(i.id));
+  const isFav=(CU.favOutfits||[]).includes(o.id);
+  const isPinned=(CU.pinnedOutfits||[]).includes(o.id);
+  const isScheduled=o.schedDate&&new Date(o.schedDate)>=new Date(new Date().toDateString());
+  return `<div class="ocard" id="oc-${o.id}">
+    <div class="och">
+      <div>
+        <div class="oc-name">${o.name||'Outfit'}</div>
+        <div class="oc-date">${fd(o.date)}</div>
+        ${o.locCat?`<div class="oc-loc"><span class="loc-badge"><i class="ti ti-map-pin"></i>${o.locCat}</span></div>`:''}
+        ${isScheduled?`<div class="oc-loc" style="margin-top:4px;"><span class="sched-badge"><i class="ti ti-clock"></i> Scheduled ${o.schedDate}${o.schedTime?' · '+o.schedTime:''}${o.schedLoc?' · '+o.schedLoc:''}</span></div>`:''}
+      </div>
+      <div class="oc-actions">
+        <button class="pin-oc ${isPinned?'on':''}" onclick="tPinOutfit('${o.id}')" title="${isPinned?'Unpin':'Pin'}"><i class="ti ti-${isPinned?'pin-filled':'pin'}"></i></button>
+        <button class="fav-oc ${isFav?'on':''}" onclick="tFavOutfit('${o.id}')"><i class="ti ti-heart${isFav?'-filled':''}"></i></button>
+        <button class="icon-btn" style="font-size:16px;" onclick="openSaveOutfit('${o.id}')"><i class="ti ti-edit"></i></button>
+        <button class="icon-btn" style="font-size:16px;color:var(--err);" onclick="deleteOutfit('${o.id}')"><i class="ti ti-trash"></i></button>
+      </div>
+    </div>
+    <div class="oc-thumbs">${oItems.map(i=>`<div class="oc-th">${i.imageData?`<img src="${i.imageData}" alt="">`:''}</div>`).join('')}</div>
+    ${o.notes?`<div class="oc-notes">"${o.notes}"</div>`:''}
+    <div class="oc-badges">
+      ${showWear&&o.wearCount?`<span class="wb">Worn ${o.wearCount}×</span>`:''}
+      ${o.lastWorn?`<span class="wb">Last worn ${fd(o.lastWorn)}</span>`:''}
+    </div>
+  </div>`;
+}
+
+function tFavOutfit(id){const db=DB.users.find(u=>u.id===CU.id);if(!db.favOutfits)db.favOutfits=[];const i=db.favOutfits.indexOf(id);if(i===-1)db.favOutfits.push(id);else db.favOutfits.splice(i,1);sync();save();rTab();}
+function tPinOutfit(id){const db=DB.users.find(u=>u.id===CU.id);if(!db.pinnedOutfits)db.pinnedOutfits=[];const i=db.pinnedOutfits.indexOf(id);if(i===-1)db.pinnedOutfits.push(id);else db.pinnedOutfits.splice(i,1);sync();save();rTab();}
+function deleteOutfit(id){confirm2('Delete outfit','This will permanently remove this outfit from your history.',()=>{DB.outfits[CU.id]=(DB.outfits[CU.id]||[]).filter(o=>o.id!==id);save();rHistory(document.getElementById('mc'));});}
+
+// ── FAVORITES ──────────────────────────────────────────────────────────────
+function rFavs(el){
+  sync();
+  const fi=myi().filter(i=>(CU.favItems||[]).includes(i.id));
+  const fo=myo().filter(o=>(CU.favOutfits||[]).includes(o.id));
+  el.innerHTML=`<div class="pt">Favorites</div>
+    <p class="section-label">Clothing items</p>
+    ${fi.length===0?`<div class="empty" style="padding:16px 0;"><i class="ti ti-heart"></i><p>No favorite items yet.<br>Tap ♡ on any item.</p></div>`:`<div class="grid2" style="margin-bottom:20px;">${fi.map(item=>`<div class="ic"><div class="ic-img">${item.imageData?`<img src="${item.imageData}" alt="">`:''}<button class="fav-b on" onclick="tFavItem('${item.id}');rFavs(document.getElementById('mc'))"><i class="ti ti-heart-filled"></i></button></div><div class="ic-info"><div class="ic-brand">${item.brand||item.category||'Item'}</div><div class="ic-meta">${item.color?`<span class="cdot" style="background:${item.color};"></span>`:''}<span>${item.colorName||item.category||''}</span>${shopLink(item.link)}</div></div></div>`).join('')}</div>`}
+    <p class="section-label">Outfits</p>
+    ${fo.length===0?`<div class="empty" style="padding:16px 0;"><i class="ti ti-heart"></i><p>No favorite outfits yet.<br>Tap ♡ on any outfit.</p></div>`:fo.map(o=>outfitCardHTML(o,myi())).join('')}`;
+}
+
+// ── SETTINGS ───────────────────────────────────────────────────────────────
+function rSettings(el){
+  sync();
+  el.innerHTML=`<div class="pt">Settings</div>
+    <div class="ss">
+      <div class="ssl">Profile</div>
+      <div style="background:var(--ww);border:1px solid rgba(163,143,133,.15);border-radius:var(--r);padding:15px;display:flex;align-items:center;gap:14px;margin-bottom:12px;cursor:pointer;box-shadow:var(--shc);" onclick="rProfile(document.getElementById('mc'))">
+        ${avHTML(CU,48)}<div><div style="font-size:15px;font-weight:500;color:var(--ink);">${CU.name}</div><div style="font-size:12px;color:var(--tp);">@${CU.username}</div>${CU.bio?`<div style="font-size:12px;color:var(--br);margin-top:3px;font-style:italic;">${CU.bio}</div>`:''}</div>
+      </div>
+      <div class="slist">
+        <div class="srow" onclick="openEditProfile()" style="cursor:pointer;"><div class="si"><i class="ti ti-user"></i></div><div class="st"><div class="sr-title">Edit profile</div><div class="sr-sub">Name, username, bio, photo</div></div><i class="ti ti-chevron-right" style="color:var(--tp);font-size:16px;"></i></div>
+        <div class="srow" onclick="openChangePw()" style="cursor:pointer;"><div class="si"><i class="ti ti-lock"></i></div><div class="st"><div class="sr-title">Change password</div><div class="sr-sub">Update your password</div></div><i class="ti ti-chevron-right" style="color:var(--tp);font-size:16px;"></i></div>
+      </div>
+    </div>
+    <div class="ss">
+      <div class="ssl">Session</div>
+      <div class="slist">
+        <div class="srow danger" onclick="doSignout()" style="cursor:pointer;"><div class="si"><i class="ti ti-logout"></i></div><div class="st"><div class="sr-title">Sign out</div><div class="sr-sub">@${CU.username}</div></div></div>
+      </div>
+    </div>`;
+}
+
+function rProfile(el){
+  sync();
+  const items=myi(),outfits=myo(),favCount=(CU.favItems||[]).length+(CU.favOutfits||[]).length;
+  el.innerHTML=`<button class="back-btn" onclick="rSettings(document.getElementById('mc'))"><i class="ti ti-arrow-left"></i> Back</button>
+    <div class="phdr">
+      <div class="ptop"><div class="pav" style="background:${avc(CU.username)};">${CU.avatar?`<img src="${CU.avatar}" alt="${CU.name}">`:ini(CU.name)}</div>
+        <div><div class="pname">${CU.name}</div><div class="phandle">@${CU.username}</div>${CU.bio?`<div class="pbio">${CU.bio}</div>`:''}</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div class="pstats"><div><div class="stn">${items.length}</div><div class="stl">Items</div></div><div><div class="stn">${outfits.length}</div><div class="stl">Outfits</div></div><div><div class="stn">${favCount}</div><div class="stl">Favorites</div></div></div>
+        <button class="bsm" onclick="openEditProfile()"><i class="ti ti-edit"></i> Edit</button>
+      </div>
+    </div>
+    <p class="pt" style="font-size:16px;margin-bottom:11px;">My closet</p>
+    ${items.length===0?`<div class="empty" style="padding:20px 0;"><i class="ti ti-hanger"></i><p>No items yet.</p></div>`:`<div class="grid2">${items.map(item=>`<div class="ic"><div class="ic-img">${item.imageData?`<img src="${item.imageData}" alt="">`:''}</div><div class="ic-info"><div class="ic-brand">${item.brand||item.category||'Item'}</div><div class="ic-meta">${item.color?`<span class="cdot" style="background:${item.color};"></span>`:''}<span>${item.colorName||item.category||''}</span>${shopLink(item.link)}</div></div></div>`).join('')}</div>`}`;
+}
+
+function openEditProfile(){sync();PENDAV=null;showM(`<div class="mh"></div><div class="mt">Edit profile</div><div class="av-up"><div class="av-ring" id="av-ring" onclick="document.getElementById('fa').click()" style="cursor:pointer;"></div><div class="av-hint">Tap to change photo</div></div><div class="fg"><label class="fl">Display name</label><input class="fi" id="epname" value="${CU.name}" placeholder="Your name"></div><div class="fg"><label class="fl">Username</label><input class="fi" id="epuser" value="${CU.username}" placeholder="username"></div><div class="fg"><label class="fl">Bio</label><textarea class="fi" id="epbio" placeholder="A short bio…">${CU.bio||''}</textarea></div><div id="epmsg"></div><button class="bp bmt" onclick="saveEditProfile()">Save changes</button><button class="bs" onclick="closeM()">Cancel</button>`);refreshAV();}
+function saveEditProfile(){const name=document.getElementById('epname').value.trim(),u=document.getElementById('epuser').value.trim().toLowerCase().replace(/[^a-z0-9_]/g,''),bio=document.getElementById('epbio').value.trim(),msg=document.getElementById('epmsg');if(!name||!u){msg.innerHTML='<div class="aerr">Name and username are required.</div>';return;}if(u!==CU.username&&DB.users.find(x=>x.username===u&&x.id!==CU.id)){msg.innerHTML='<div class="aerr">Username taken.</div>';return;}const db=DB.users.find(x=>x.id===CU.id);db.name=name;db.username=u;db.bio=bio;if(PENDAV)db.avatar=PENDAV;save();sync();closeM();renderApp();}
+function openChangePw(){showM(`<div class="mh"></div><div class="mt">Change password</div><div class="fg"><label class="fl">Current password</label>${pwF('cpold','••••••••','current-password')}</div><div class="fg"><label class="fl">New password</label>${pwF('cpnew','••••••••','new-password')}</div><div class="fg"><label class="fl">Confirm new password</label>${pwF('cpconf','••••••••','new-password')}</div><div id="cpmsg"></div><button class="bp bmt" onclick="saveChangePw()">Update password</button><button class="bs" onclick="closeM()">Cancel</button>`);}
+function saveChangePw(){const old=document.getElementById('cpold').value,np=document.getElementById('cpnew').value,cp=document.getElementById('cpconf').value,msg=document.getElementById('cpmsg');const db=DB.users.find(x=>x.id===CU.id);if(db.password!==old){msg.innerHTML='<div class="aerr">Current password incorrect.</div>';return;}if(np.length<4){msg.innerHTML='<div class="aerr">At least 4 characters required.</div>';return;}if(np!==cp){msg.innerHTML='<div class="aerr">Passwords do not match.</div>';return;}db.password=np;save();sync();msg.innerHTML='<div class="aok">Password updated!</div>';setTimeout(closeM,1400);}
+function doSignout(){localStorage.removeItem('fl_session');CU=null;SEL=[];TAB='closet';render();}
+
+// ── MODAL ──────────────────────────────────────────────────────────────────
+function showM(html){document.getElementById('moverlay').classList.remove('hidden');document.getElementById('mcontent').innerHTML=html;}
+function closeM(){document.getElementById('moverlay').classList.add('hidden');}
+function oMO(e){if(e.target===document.getElementById('moverlay'))closeM();}
+
+render();
+</script>
+</body>
+</html>
